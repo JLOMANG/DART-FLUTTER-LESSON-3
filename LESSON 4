@@ -1,0 +1,48 @@
+# Define an interface
+class DentalProcedure:
+    def cost(self):
+        pass
+
+# Define a class that implements the DentalProcedure interface
+class Cleaning(DentalProcedure):
+    def __init__(self, duration):
+        self.duration = duration
+
+    def cost(self):
+        return self.duration * 50  # Assuming $50 per hour for cleaning
+
+# Define another class that inherits from Cleaning
+class Filling(Cleaning):
+    def __init__(self, duration, material_cost):
+        super().__init__(duration)
+        self.material_cost = material_cost
+
+    def cost(self):
+        return super().cost() + self.material_cost
+
+# Define a method to read data from a file and create objects
+def create_procedures_from_file(filename):
+    procedures = []
+    with open(filename, 'r') as file:
+        for line in file:
+            data = line.strip().split(',')
+            if data[0] == 'Cleaning':
+                duration = float(data[1])
+                procedures.append(Cleaning(duration))
+            elif data[0] == 'Filling':
+                duration = float(data[1])
+                material_cost = float(data[2])
+                procedures.append(Filling(duration, material_cost))
+    return procedures
+
+# Define a method demonstrating the use of a loop
+def total_cost(procedures):
+    total = 0
+    for procedure in procedures:
+        total += procedure.cost()
+    return total
+
+# Main program
+if __name__ == "__main__":
+    procedures = create_procedures_from_file("procedures.txt")  # Read procedures from file
+    total =
